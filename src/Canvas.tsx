@@ -3,19 +3,23 @@ import { person_name } from './App.tsx';
 import './Canvas.css';
 // Dynamically import all images from the 'public/media/images' directory
 
-const images = import.meta.glob('./assets/media/images/*.{webp,png,jpg,jpeg,svg}', { eager: true });
-const imageArray = Object.values(images).map((module) => module.default);
+const images: Record<string, () => any> = import.meta.glob('./assets/media/images/*.{webp,png,jpg,jpeg,svg}', { eager: true });
+// @ts-ignore
+const imageArray = Object.values(images).map((module : { default: any }) => module.default);
 
-// Function to extract the year from an image filename
-const getYearFromImage = (image) => {
+const getYearFromImage = (image: string) => {
   const filename = image.split('/').pop();
-  return filename.split('_')[0];
+  if (filename) {
+    return filename.split('_')[0];
+  } else {
+    return '';
+  }
 };
 
 // Select K items per year
 const K = 3; // num of element per year
 const M = 3; // TOP M years to display
-const imagesPerYear = {};
+let imagesPerYear: { [year: string]: string[] } = {};
 imageArray.forEach((image) => {
   const year = getYearFromImage(image);
   if (!imagesPerYear[year]) {
@@ -27,7 +31,7 @@ imageArray.forEach((image) => {
 });
 
 // Flatten the images per year into a single array
-const allImages = [].concat(...Object.values(imagesPerYear));
+const allImages = Object.values(imagesPerYear).flat();
 
 const yearInfoLookup = {
   '2012': { 
@@ -83,17 +87,17 @@ const yearInfoLookup = {
     description: 'As AI technology advanced, teenagers embraced robot companions and automated assistants. They debated the ethics of artificial intelligence and eagerly awaited the day when self-driving cars would become the norm.'
   }
 };
-
 function Canvas() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [yearCounts, setYearCounts] = useState({});
-  const [shuffledImages, setShuffledImages] = useState([]);
+  const [yearCounts, setYearCounts] = useState<Record<string, number>>({});
+  const [shuffledImages, setShuffledImages] = useState<string[]>([]); // Specify the type as string[]
+
   const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
     const shuffled = [...allImages].sort(() => Math.random() - 0.5);
     setShuffledImages(shuffled);
-    const initialCounts = {};
+    const initialCounts: Record<string, number> = {};
     Object.keys(imagesPerYear).forEach((year) => {
       initialCounts[year] = 0;
     });
@@ -124,7 +128,7 @@ function Canvas() {
     <div className="canvas-container">
       {currentPhotoIndex < shuffledImages.length && shuffledImages.length > 0 && (
         <div className="photo-container">
-         <h1>Photos</h1>
+          <h1>Photos</h1>
           <img
             src={shuffledImages[currentPhotoIndex]}
             alt={`Photo ${currentPhotoIndex + 1}`}
@@ -137,27 +141,27 @@ function Canvas() {
         <div className="results">
           <h1>Your most favourite {person_name}'s eras were:</h1>
           {Object.entries(yearCounts)
-  .sort(([, a], [, b]) => b - a)
-  .slice(0, M)
-  .map(([year, count], index) => (
-    <div key={year}>
-      {/* Generate stars based on position */}
-      {Array.from({ length: M - index }, (_, i) => (
-        <span key={i}>⭐️</span>
-      ))}
-      <h2>🗓️ {yearInfoLookup[year].name} ({year})</h2>
-      <h3>🔥 Score: {count}</h3>
-      {/* Display additional information from the lookup table */}
-      {yearInfoLookup[year] && (
-        <p>{yearInfoLookup[year].description}</p>
-      )}
-      {/* Add a line separator except for the last item */}
-      {index !== M - 1 && <hr />}
-    </div>
-  ))}
-
+            .sort(([, a], [, b]) => b - a)
+            .slice(0, M)
+            .map(([year, count], index) => (
+              <div key={year}>
+                {/* Generate stars based on position */}
+                {Array.from({ length: M - index }, (_, i) => (
+                  <span key={i}>⭐️</span>
+                ))}
+                {/* Use type assertion here */}
+                <h2>🗓️ {yearInfoLookup[year as keyof typeof yearInfoLookup].name} ({year})</h2>
+                <h3>🔥 Score: {count}</h3>
+                {/* Display additional information from the lookup table */}
+                {yearInfoLookup[year as keyof typeof yearInfoLookup] && (
+                  <p>{yearInfoLookup[year as keyof typeof yearInfoLookup].description}</p>
+                )}
+                {/* Add a line separator except for the last item */}
+                {index !== M - 1 && <hr />}
+              </div>
+            ))}
         </div>
-      ): (
+      ) :(
         <div className="decision-buttons">
           <button className="smash-button" onClick={handleSmash}>Smash</button>
           <button className="pass-button" onClick={handlePass}>Pass</button>

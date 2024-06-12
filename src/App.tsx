@@ -1,9 +1,8 @@
 
 import { useState } from 'react';
 import './App.css';
-import Canvas from './Canvas.tsx';
+import Canvas from './Canvas.jsx';
 import person_face from './assets/media/mati-face.webp';
-
 export const person_name = 'Maty';
 
 function App() {
