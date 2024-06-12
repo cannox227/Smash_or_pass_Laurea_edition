@@ -5,4 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: "/Smash_or_pass_Laurea_edition/",
+  build: {
+    outDir: "docs"
+  }
 });

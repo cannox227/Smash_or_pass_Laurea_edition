@@ -132,6 +132,7 @@ function Canvas() {
           <img
             src={shuffledImages[currentPhotoIndex]}
             alt={`Photo ${currentPhotoIndex + 1}`}
+            className="canvas-image"
             style={{ width: '80vw' }}
           />
           <p>{currentPhotoIndex + 1} / {shuffledImages.length}</p>

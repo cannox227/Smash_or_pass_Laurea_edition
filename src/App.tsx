@@ -12,18 +12,16 @@ function App() {
 
   const handleStartClick = () => {
     setAnimate(true);
-    setShowHomeIntro(false);
   };
 
   const handleAnimationEnd = () => {
       setAnimationDone(true);
+      setShowHomeIntro(false);
    };
-
 
   return (
     <>
         {showHomeIntro && !animationDone && (
-        
         <div className="image-container">
         <img
           src={person_face}
@@ -31,14 +29,15 @@ function App() {
           className={`rotating-image ${animate ? 'animate' : ''}`}
           onAnimationEnd={handleAnimationEnd}
         />
-
+      {!animate && (
       <div className="home_intro">
         <h1>Smash or Pass</h1>
-      <h2>{person_name}'s Laurea Edition</h2>
+      <h2>{person_name}'s Laurea Edition 🎓</h2>
       <div className="card">
         <button onClick={handleStartClick}>Start!</button>
       </div>
       </div>
+      )}
       </div>
       )}
 

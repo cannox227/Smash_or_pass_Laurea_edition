@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://cannox227.github.io/Smash_or_pass_Laurea_edition",
+  "homepage": "https://cannox227.github.io/Smash_or_pass_Laurea_edition/",
   "scripts": {
     "dev": "vite",
     "predeploy": "npm run build --base /Smash_or_pass_Laurea_edition/",
