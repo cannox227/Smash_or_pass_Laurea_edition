@@ -1,0 +1,32 @@
+.decision-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.smash-button {
+  background-color: #34C759; /* green background */
+  color: #FFFFFF; /* white text */
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 20px; /* add some margin to separate from Pass button */
+}
+
+.pass-button {
+  background-color: #FF3737; /* red background */
+  color: #FFFFFF; /* white text */
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.smash-button, .pass-button {
+  width: 100%; /* set the width of each button to 45% of the screen */
+  font-size: 3em;
+  font-weight: bold;
+  margin: 10px; /* add some margin to separate the buttons */
+}
