@@ -5,7 +5,7 @@ import './Canvas.css';
 
 const images: Record<string, () => any> = import.meta.glob('./assets/media/images/*.{webp,png,jpg,jpeg,svg}', { eager: true });
 // @ts-ignore
-const imageArray = Object.values(images).map((module : { default: any }) => module.default);
+let imageArray = Object.values(images).map((module: { default: any }) => module.default);
 
 const getYearFromImage = (image: string) => {
   const filename = image.split('/').pop();
@@ -16,8 +16,15 @@ const getYearFromImage = (image: string) => {
   }
 };
 
+function shuffleArray(array: any[]) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+// Shuffle the image array
+imageArray = shuffleArray(imageArray);
+
 // Select K items per year
-const K = 3; // num of element per year
+const K = 5; // num of element per year
 const M = 3; // TOP M years to display
 let imagesPerYear: { [year: string]: string[] } = {};
 imageArray.forEach((image) => {
@@ -30,63 +37,63 @@ imageArray.forEach((image) => {
   }
 });
 
+
+
+// Shuffle the images per year
+Object.keys(imagesPerYear).forEach((year) => {
+  imagesPerYear[year] = shuffleArray(imagesPerYear[year]);
+});
+
 // Flatten the images per year into a single array
 const allImages = Object.values(imagesPerYear).flat();
 
 const yearInfoLookup = {
-  '2012': { 
-    name: 'The Mayan Meltdown', 
-    description: 'Teenagers were busy debunking Mayan apocalypse theories while simultaneously perfecting their Gangnam Style dance moves. Instagram filters and Harlem Shake videos dominated their social media feeds.'
+  '2014': {
+    name: 'Matilde Innocente',
+    description: 'La tua partner ideale è Matilde 2014, ti piace qualcuno timido e ingenuo. Una horsegirl che il primo giorno di scuola chiede quando ci sarà la verifica.\n#spiritcavalloselvaggio #teacherspet'
   },
-  '2013': { 
-    name: 'The Vine Era', 
-    description: 'Short attention spans were on full display as teenagers embraced the six-second video platform Vine. Selfies were taken to new heights with the introduction of selfie sticks, and emojis became an integral part of digital communication.'
+  '2015': {
+    name: 'Matilde Effervescente',
+    description: 'La tua partner ideale è Matilde 2015, ti piace qualcuno di effervescente e high energy.Una redhead che ama gli anime ma soprattutto i loro protagonisti. \n#free #otomegames #christmassongalldaylong'
   },
-  '2014': { 
-    name: 'The Ice Bucket Challenge Craze', 
-    description: 'Teenagers poured buckets of ice water over their heads in the name of ALS awareness and then nominated their friends to do the same. Flappy Bird addiction reached its peak, and everyone was obsessed with "Let It Go" from Frozen.'
+  '2016': {
+    name: 'Matilde Energetica',
+    description: 'La tua partner ideale è Matilde 2016, ti piace qualcuno di molto energetico ma che incanala queste sue forze in hobby e ambizioni. Una rossa che sta tornando al naturale e che gioca segretamente a LOL. Una viaggiatrice alla conquista dell’Australia.\n#gamergirl #energyover9000'
   },
-  '2015': { 
-    name: 'The Snapchat Spectacle', 
-    description: 'Teenagers spent countless hours sending disappearing photos and videos to their friends on Snapchat. They debated the color of a dress, lost themselves in the world of Netflix binge-watching, and dabbed their way through social gatherings.'
+  '2017': {
+    name: 'Matilde Edgy',
+    description: ' La tua partner ideale è Matilde 2017, ti piace qualcuno che “looks innocent but could kill you”, una Mati che ha abbracciato il lato più edgy di se stessa, anche se in fondo è sempre una patatona.\n#piss&love #gunisfun #nerd'
   },
-  '2016': { 
-    name: 'The Pokémon Go Pandemonium', 
-    description: 'Teenagers took to the streets in search of virtual creatures with the launch of Pokémon Go. They debated whether Laurel or Yanny was being said, and "Damn Daniel" became a viral sensation.'
+  '2018': {
+    name: 'Matilde Festaiola',
+    description: 'La tua partner ideale è Matilde 2018, ti piace una persona che ha trovato la sua strada ma sa comunque godersi le follie della vita. Una Mati che parties hard but cuddles harder.\n#YOLO #sillygoosy.'
   },
-  '2017': { 
-    name: 'The Fidget Spinner Frenzy', 
-    description: 'Fidget spinners spun their way into the hands of every teenager, providing a brief distraction from the chaos of the world. Memes ruled the internet, and everyone tried their hand at the Bottle Flip Challenge.'
+  '2019': {
+    name: 'Matilde Girlboss',
+    description: 'La tua partner ideale è Matilde 2019, ti piace una girlboss al naturale, una donna in carriera ma che sa rockare un look da cougar (ma plantbased queen). Un attivista in erba.\n#svampygirl #rawr #veganlife'
   },
-  '2018': { 
-    name: 'The Fortnite Phenomenon', 
-    description: 'Teenagers battled it out in the virtual world of Fortnite, building forts and doing dances known as emotes. They debated whether "Yanny" or "Laurel" was being said, and the phrase "OK Boomer" became a cultural phenomenon.'
+  '2020': {
+    name: 'Matilde Resiliente',
+    description: 'La tua partner ideale è Matilde 2020, ti piace una persona che sa combattere le difficoltà, covid hits hard ma Mati hits harder, specialmente con il nuovo look da schianto.\n#fatavioletta #fuckcovid #chloetingabsworkout'
   },
-  '2019': { 
-    name: 'The VSCO Girl Trend', 
-    description: 'Teenagers embraced the VSCO girl aesthetic with oversized T-shirts, scrunchies, and Hydro Flask water bottles. They debated the color of a shoe, and Baby Yoda captured the hearts of millions.'
+  '2021': {
+    name: 'Matilde Punk',
+    description: 'La tua partner ideale è Matilde 2021, una Matilde che ci ha dato un taglio (letteralmente), sfoggia una frangetta e capelli multicolor accompagnati da una grande passione per i my chemical romance e musica e style punk/emo. Confident e con una vita troppo interessante per non condividerla.\n#influencer #punkyfunky #outfitqueen'
   },
-  '2020': { 
-    name: 'The Quarantine Quirk', 
-    description: 'Locked indoors due to a global pandemic, teenagers adapted to virtual classrooms and socially distanced hangouts. TikTok dances and homemade sourdough bread became the highlights of their quarantine diaries.'
+  '2022': {
+    name: 'Matilde Sociale',
+    description: 'La tua partner ideale è Matilde 2022, ti piace una farfalla sociale che spiega le ali e diffonde la sua sprizzante energia. Mati è nella sua foodblogger era e concert junkie.\n#cibobruttomabuono #musicfan #winxclub'
   },
-  '2021': { 
-    name: 'The Zoom Zest', 
-    description: 'Teenagers continued to navigate virtual classrooms and socially distanced hangouts. They mastered the art of baking banana bread and tie-dyeing everything in sight, while eagerly awaiting the return of normalcy.'
+  '2023': {
+    name: 'Matilde Matura',
+    description: 'La tua partner ideale è Matilde 2023, ti piace una persona matura, un\'appassionata di lettura che pur di non sprecare un secondo si sfonda di audiolibri. Una Mati che sa quello che vuole, e quello che vuole è fare la nanna presto. \n#nofomo #grannylife #miao #honkmimimi'
   },
-  '2022': { 
-    name: 'The Crypto Craze', 
-    description: 'Teenagers jumped on the cryptocurrency bandwagon, investing in Dogecoin and debating the merits of NFTs. They perfected their Zoom backgrounds and yearned for the days of crowded concerts and packed movie theaters.'
-  },
-  '2023': { 
-    name: 'The Metaverse Madness', 
-    description: 'With the rise of virtual reality technology, teenagers immersed themselves in the metaverse, attending virtual concerts and exploring digital worlds. They debated the best meme formats and eagerly awaited the latest iPhone release.'
-  },
-  '2024': { 
-    name: 'The Robot Revolution', 
-    description: 'As AI technology advanced, teenagers embraced robot companions and automated assistants. They debated the ethics of artificial intelligence and eagerly awaited the day when self-driving cars would become the norm.'
+  '2024': {
+    name: 'Matilde Chill',
+    description: ' La tua partner ideale è Matilde 2024, una persona che sa entrare nel flusso dove tutto diventa C H I L L e una gymbro. Qualcuno che pensa positivo e lascia che il resto scivoli via, che grazie alla fusione di tutte le Mati passate ha raggiunto grandi obiettivi. Una ballerina “in provetta” e che presto potrà farti da sugary mommy (to be continued).\n#staytuned #saicosahovisto? #nopresura #sialflussonoalreflusso'
   }
 };
+
 function Canvas() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [yearCounts, setYearCounts] = useState<Record<string, number>>({});
@@ -95,13 +102,12 @@ function Canvas() {
   const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
-    const shuffled = [...allImages].sort(() => Math.random() - 0.5);
-    setShuffledImages(shuffled);
     const initialCounts: Record<string, number> = {};
     Object.keys(imagesPerYear).forEach((year) => {
       initialCounts[year] = 0;
     });
     setYearCounts(initialCounts);
+    setShuffledImages(shuffleArray([...allImages])); // Shuffle here
   }, []);
 
   const handleSmash = () => {
@@ -122,6 +128,11 @@ function Canvas() {
     if (currentPhotoIndex + 1 === shuffledImages.length) {
       setShowResults(true);
     }
+  };
+
+  const handlePlayAgain = () => {
+    // Refresh the page
+    window.location.reload();
   };
 
   return (
@@ -161,8 +172,9 @@ function Canvas() {
                 {index !== M - 1 && <hr />}
               </div>
             ))}
+          <button className="play-again-button" onClick={handlePlayAgain}>Play Again</button>
         </div>
-      ) :(
+      ) : (
         <div className="decision-buttons">
           <button className="smash-button" onClick={handleSmash}>Smash</button>
           <button className="pass-button" onClick={handlePass}>Pass</button>
