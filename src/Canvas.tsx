@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, JSXElementConstructor, ReactElement, ReactNode } from 'react';
 import { person_name } from './App.tsx';
 import './Canvas.css';
 // Dynamically import all images from the 'public/media/images' directory
@@ -93,12 +93,11 @@ const yearInfoLookup = {
     description: ' La tua partner ideale è Matilde 2024, una persona che sa entrare nel flusso dove tutto diventa C H I L L e una gymbro. Qualcuno che pensa positivo e lascia che il resto scivoli via, che grazie alla fusione di tutte le Mati passate ha raggiunto grandi obiettivi. Una ballerina “in provetta” e che presto potrà farti da sugary mommy (to be continued).\n#staytuned #saicosahovisto? #nopresura #sialflussonoalreflusso'
   }
 };
-
+let year: string;
 function Canvas() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [yearCounts, setYearCounts] = useState<Record<string, number>>({});
   const [shuffledImages, setShuffledImages] = useState<string[]>([]); // Specify the type as string[]
-
   const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
@@ -110,9 +109,14 @@ function Canvas() {
     setShuffledImages(shuffleArray([...allImages])); // Shuffle here
   }, []);
 
+  let currentImage: string;
+  if (shuffledImages[currentPhotoIndex] != undefined) {
+    currentImage = shuffledImages[currentPhotoIndex];
+    year = getYearFromImage(currentImage);
+  }
   const handleSmash = () => {
-    const currentImage = shuffledImages[currentPhotoIndex];
-    const year = getYearFromImage(currentImage);
+    currentImage = shuffledImages[currentPhotoIndex];
+    year = getYearFromImage(currentImage);
     setYearCounts((prevCounts) => ({ ...prevCounts, [year]: prevCounts[year] + 1 }));
     setCurrentPhotoIndex(currentPhotoIndex + 1);
     if (currentPhotoIndex + 1 === shuffledImages.length) {
@@ -121,8 +125,8 @@ function Canvas() {
   };
 
   const handlePass = () => {
-    const currentImage = shuffledImages[currentPhotoIndex];
-    const year = getYearFromImage(currentImage);
+    currentImage = shuffledImages[currentPhotoIndex];
+    year = getYearFromImage(currentImage);
     setYearCounts((prevCounts) => ({ ...prevCounts, [year]: prevCounts[year] - 1 }));
     setCurrentPhotoIndex(currentPhotoIndex + 1);
     if (currentPhotoIndex + 1 === shuffledImages.length) {
@@ -146,6 +150,7 @@ function Canvas() {
             className="canvas-image"
             style={{ width: '80vw' }}
           />
+          <p>{year}</p>
           <p>{currentPhotoIndex + 1} / {shuffledImages.length}</p>
         </div>
       )}
