@@ -176,7 +176,6 @@ function Canvas() {
               className="canvas-image"
               style={{ width: "80vw" }}
             />
-            <p>{year}</p>
             <p>
               {currentPhotoIndex + 1} / {shuffledImages.length}
             </p>
